@@ -37,11 +37,13 @@ A few of the contributors to sailfishos-open have put together a resource for in
 ```bash
 lsb_release -sc
 ```
-output of above command should be your distribution name.
+output of above command should be your distribution name.  
+keep it handy. it will be asked during installation.
+
 >this guide may work on any other debian-based distribution,  
 >just enter bullseye as your distribution name when asked during installation.
 >
->[see guides for other distributions](https://docs.waydro.id/usage/install-on-desktops)
+>[see guides for non-debian distributions](https://docs.waydro.id/usage/install-on-desktops)
 
 #### wayland
 ```bash
