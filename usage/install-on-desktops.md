@@ -32,72 +32,40 @@ A few of the contributors to sailfishos-open have put together a resource for in
 
 ## Ubuntu/Debian Based Install Instructions
 
-### Installation
-
-These instructions work for ubuntu focal, ubuntu hirsute, debian bullseye, droidian, ubports, and likely more. We will continue to update this document as the project further develops
-
-### Install Pre-requisites
-
+### Prerequisites
+#### officially supported distributions are focal, hirsute and bullseye.
 ```bash
-sudo apt install curl -y
+lsb_release -sc
 ```
-
-Waydroid requires the following in order to work properly on your PC:
-
-* python3
-* lxc
-* curl
-* Wayland session manager _**IMPORTANT!!**_
-
-> _**NOTES**:_
+output of above command should be your distribution name.
+>this guide may work on any other debian-based distribution too,  
+>just enter bullseye as your distribution name when asked during installation.
 >
-> * ⚠️ NVIDIA GPUs do not work as of now, try using iGPU of your CPU or software rendering instead.
-> * _**Wayland session manager**_ comes with distros running GNOME by default (Ubuntu, Pop!\_OS, Fedora, etc), so no need to install separately.
-> * Other desktop environments/window managers, might not support Wayland out of the box. (KDE Plasma does after 5.21)
+>[see guides for other distributions](https://docs.waydro.id/usage/install-on-desktops)
 
-### Install Waydroid
+#### wayland
+```bash
+echo $XDG_SESSION_TYPE
+```
+output of above command should be wayland  
+if not switch to wayland display server first.
 
-Install ca-certificates, if not already installed.
+
+### Install Instructions
+run the command given below-
 
 ```bash
-sudo apt install ca-certificates
+printf "\nenter your distribution name: " && read DISTRO && \
+sudo apt install python3 lxc wget ca-certificates && \
+sudo wget https://repo.waydro.id/waydroid.gpg -O /usr/share/keyrings/waydroid.gpg && \
+sudo sh -c "echo 'deb [signed-by=/usr/share/keyrings/waydroid.gpg] https://repo.waydro.id/ $DISTRO main' > /etc/apt/sources.list.d/waydroid.list" && \
+sudo apt update && sudo apt install waydroid && sudo waydroid init && sudo systemctl start waydroid-container &&\
+echo -e "\n waydroid installed."
 ```
+launch waydroid from the apps menu.  
+first launch(and first launch after reboot) takes a few minutes before waydroid appears.
 
-Check your distro (codename) for the next step
-
-```bash
-lsb_release -c
-```
-
-Add the repo to your `sources.list`
-
-* **Add waydroid repo** _(for droidian & ubports, this step can be skipped)_ Replace `DISTRO="bullseye"` with your current target. Options: **focal**, **bullseye**, **hirsute**
-
-```bash
-export DISTRO="bullseye" && \
-sudo curl -# --proto '=https' --tlsv1.2 -Sf https://repo.waydro.id/waydroid.gpg --output /usr/share/keyrings/waydroid.gpg && \
-echo "deb [signed-by=/usr/share/keyrings/waydroid.gpg] https://repo.waydro.id/ $DISTRO main" > ~/waydroid.list && \
-sudo mv ~/waydroid.list /etc/apt/sources.list.d/waydroid.list && \
-sudo apt update
-```
-
-**install Waydroid:**
-
-```bash
-sudo apt install waydroid -y
-```
-
-**And start the init process:**
-
-```bash
-sudo waydroid init
-```
-
-**Then start the waydroid container service (or just simply reboot):**
-
-```bash
-sudo systemctl start waydroid-container
-```
+if waydroid does not appears even after 5-10 minutes, refer Troubleshooting section.
 
 ## Troubleshooting
 
